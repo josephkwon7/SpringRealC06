@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- 데이터 소스 설정 : DriveManagerDataSource 클래스를 이용한다. -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- JDBC 드라이버 클래스명 설정 -->
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+
+		<!-- 데이터베이스 파일의 위치 설정 -->
+		<property name="url">
+			<value>jdbc:mysql://aws02/spring??autoReconnect=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8
+			</value>
+		</property>
+
+		<!--  MySQL의 사용자 계정 설정 -->
+		<property name="username">
+			<value>root</value>
+		</property>
+
+		<!-- MySQL의 사용자 패스워드 설정 -->
+		<property name="password">
+			<value>Akdldp!@34</value>
+		</property>
+	</bean>
+
+	<!-- 클래스 MenuUi로 menuUi란 이름으로 빈 객체를 생성한다. -->
+	<bean id="menuUi" class="ui.MenuUi">
+		<property name="selectTeamUi" ref="selectTeamUi" />
+		<property name="insertPlayerUi" ref="insertPlayerUi" />
+		<property name="selectPlayerUi" ref="selectPlayerUi" />
+	</bean>
+
+	<!-- 클래스 TeamDaoImpl로 teamDao란 이름으로 빈 객체를 생성한다. -->
+	<bean id="teamDao" class="dao.impl.TeamDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 클래스 SelectTeamUi로 selectTeamUi란 이름으로 빈 객체를 생성한다. -->
+	<bean id="selectTeamUi" class="ui.SelectTeamUi">
+		<property name="teamDao" ref="teamDao"></property>
+	</bean>
+
+	<bean id="playerDao" class="dao.impl.PlayerDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<bean id="insertPlayerUi" class="ui.InsertPlayerUi">
+		<property name="teamDao" ref="teamDao"></property>
+		<property name="playerDao" ref="playerDao"></property>
+	</bean>
+
+	<bean id="selectPlayerUi" class="ui.SelectPlayerUi">
+		<property name="playerDao" ref="playerDao"></property>
+		<property name="updatePlayerUi" ref="updatePlayerUi"></property>
+		<property name="deletePlayerUi" ref="deletePlayerUi"></property>
+	</bean>
+
+	<bean id="updatePlayerUi" class="ui.UpdatePlayerUi">
+		<property name="teamDao" ref="teamDao"></property>
+		<property name="playerDao" ref="playerDao"></property>
+	</bean>
+
+	<bean id="deletePlayerUi" class="ui.DeletePlayerUi">
+		<property name="playerDao" ref="playerDao"></property>
+	</bean>
+
+</beans>
